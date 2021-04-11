@@ -48,59 +48,19 @@ public class DaJiaJieSheIII {
         if (root == null) {
             return 0;
         }
-        int left = 0, right = 0;
+        if (hashMap.containsKey(root)) {
+            return hashMap.get(root);
+        }
+        int val = root.val;
         if (root.left != null) {
-            if (root.left.left != null) {
-                int val = 0;
-                if (!hashMap.containsKey(root.left.left)) {
-                    val = rob(root.left.left);
-                    hashMap.put(root.left.left, val);
-                }
-                left += hashMap.get(root.left.left);
-            }
-            if (root.left.right != null) {
-                int val = 0;
-                if (!hashMap.containsKey(root.left.right)) {
-                    val = rob(root.left.right);
-                    hashMap.put(root.left.right, val);
-                }
-                left += hashMap.get(root.left.right);
-            }
+            val += rob(root.left.left) + rob(root.left.right);
         }
         if (root.right != null) {
-            if (root.right.left != null) {
-                int val = 0;
-                if (!hashMap.containsKey(root.right.left)) {
-                    val = rob(root.right.left);
-                    hashMap.put(root.right.left, val);
-                }
-                right += hashMap.get(root.right.left);
-            }
-            if (root.right.right != null) {
-                if (!hashMap.containsKey(root.right.right)) {
-                    int val = rob(root.right.right);
-                    hashMap.put(root.right.right, val);
-                }
-                right += hashMap.get(root.right.right);
-            }
+            val += rob(root.right.left) + rob(root.right.right);
         }
-        int other = 0;
-        if (root.left != null) {
-            if (!hashMap.containsKey(root.left)) {
-                int val = rob(root.left);
-                hashMap.put(root.left, val);
-            }
-            other += hashMap.get(root.left);
-        }
-        if (root.right != null) {
-            if (!hashMap.containsKey(root.right)) {
-                int val = rob(root.right);
-                hashMap.put(root.right, val);
-            }
-            other += hashMap.get(root.right);
-        }
-
-        return Math.max(root.val + left + right, other);
+        int max = Math.max(val, rob(root.left) + rob(root.right));
+        hashMap.put(root, max);
+        return max;
     }
 }
 
