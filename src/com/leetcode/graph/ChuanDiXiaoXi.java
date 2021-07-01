@@ -61,8 +61,36 @@ public class ChuanDiXiaoXi {
         return res;
     }
 
+    /**
+     * 动态规划
+     * @param n
+     * @param relation
+     * @param k
+     * @return
+     */
+    public static int numWays2(int n, int[][] relation, int k) {
+        int dp[][] = new int[n][k];
+        int[][] graph = new int[n][n];
+        for (int[] rows : relation) {
+            graph[rows[0]][rows[1]] = 1;
+        }
+        for (int i = 0; i < k; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int l = 0; l < n; l++) {
+                    if (i == 0) {
+                        dp[j][i] = graph[j][n - 1];
+                    } else {
+                        dp[j][i] += graph[j][l] == 1 ? dp[l][i - 1] : 0;
+                    }
+                }
+            }
+        }
+        return dp[0][k - 1];
+    }
+
     public static void main(String[] args) {
-        int res = numWays(5, new int[][]{{0, 2}, {2, 1}, {3, 4}, {2, 3}, {1, 4}, {2, 0}, {0, 4}}, 3);
+        int res = numWays2(5, new int[][]{{0, 2}, {2, 1}, {3, 4}, {2, 3}, {1, 4}, {2, 0}, {0, 4}},
+            3);
         System.out.println(res);
     }
 }
