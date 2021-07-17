@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference;
 public class WeakReferenceCase {
 
     /**
-     * 弱引用只要进行GC,不管内存空间是否充足，都会回收弱引用关联的对象
+     * *只被*弱引用关联的对象只要进行GC,不管内存空间是否充足，都会回收弱引用关联的对象
      *
      * 弱引用在很多地方都有用到，比如ThreadLocal、WeakHashMap。
      *
@@ -25,8 +25,20 @@ public class WeakReferenceCase {
      * @param args
      */
     public static void main(String[] args) {
-        WeakReference<byte[]> weakReference = new WeakReference<>(new byte[10 * 1024 * 1024]);
+        byte[] bytes = new byte[10 * 1024 * 1024];
+        /**
+         * weakReference绑定的引用还被bytes强引用了
+         */
+        WeakReference<byte[]> weakReference = new WeakReference<>(bytes);
         System.gc();
         System.out.println(weakReference.get());
+        System.out.println(bytes);
+        /**
+         * bytes强引用和关联的对象被切断后，bytes 只被弱引用关联，遇到gc就被垃圾回收
+         */
+        bytes = null;
+        System.gc();
+        System.out.println(weakReference.get());
+        System.out.println(bytes);
     }
 }
