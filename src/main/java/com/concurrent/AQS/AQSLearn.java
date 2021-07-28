@@ -1,4 +1,4 @@
-package com.concurrent;
+package com.concurrent.AQS;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -65,6 +65,11 @@ public class AQSLearn {
         // ReentrantLock lock = new ReentrantLock();
         ReentrantLock lock = new ReentrantLock(true);
         lock.lock();
+        // 不会阻塞，非公平锁tryAcquire
+        lock.tryLock();
+        lock.newCondition();
+        //
+        lock.tryLock(100, TimeUnit.SECONDS);
 
         try {
             if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
