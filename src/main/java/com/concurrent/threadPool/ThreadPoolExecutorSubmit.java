@@ -42,7 +42,8 @@ public class ThreadPoolExecutorSubmit {
             return atomicInteger.incrementAndGet();
         };
         for (int i = 0; i < 10; i++) {
-            executor.submit(call);
+            Future<Integer> future = executor.submit(call);
+            future.get();
         }
         while (executor.getActiveCount() != 0){
 
